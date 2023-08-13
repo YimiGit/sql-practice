@@ -1,0 +1,16 @@
+1、npm init vite@latest
+
+y
+sql-practice-web
+vue
+TypeScript
+
+
+2、npm install less less-loader -D
+
+3、npm install pinia
+
+
+4、npm install axios -S
+
+5、npm install vue-router@4

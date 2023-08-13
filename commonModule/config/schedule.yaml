@@ -1,0 +1,20 @@
+
+service:
+  port: :19888
+  name: schedule-server
+  host: host
+
+mysql:
+  host: host
+  port: port
+  username: username
+  password: password
+  database: database_name
+  maxIdleConns: 10
+  maxOpenConns: 100
+
+redis:
+  host: host
+  port: 6379
+  password:
+  database: 0

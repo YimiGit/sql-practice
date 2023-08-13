@@ -1,0 +1,65 @@
+
+1、golang、gin、gorm、etcd、grpc、redis、rabbitMQ、xxl-job
+
+2、viper，读取config.yaml
+go get github.com/spf13/viper
+
+3、gorm
+go get -u gorm.io/gorm
+
+4、gin
+go get -u github.com/gin-gonic/gin
+
+5、mysql
+go get gorm.io/driver/mysql
+
+6、redis
+go get github.com/redis/go-redis/v9
+
+7、etcd, 编写gateway
+go get go.etcd.io/etcd/client/v3
+
+8、雪花算法
+go get github.com/bwmarrin/snowflake
+
+9、jwt
+go get -u github.com/golang-jwt/jwt/v5
+
+10、跨域配置
+go get github.com/gin-contrib/cors
+
+11、sonic
+go get github.com/bytedance/sonic
+
+12、RabbitMQ
+go get github.com/streadway/amqp
+
+13、创建pb文件
+
+cd usersModule/service/proto
+protoc --proto_path=. --go_grpc_out=. --go_out=. userService.proto
+protoc --proto_path=. --go-micro_out=. --go_out=. userService.proto
+
+
+14、
+protoc
+https://github.com/protocolbuffers/protobuf/releases
+
+protoc-gen-go
+https://github.com/golang/protobuf
+
+protoc-gen-go_grpc
+https://github.com/grpc/grpc-go
+
+15、pb依赖
+
+go get google.golang.org/protobuf
+go get -u google.golang.org/grpc
+
+16、xxl-job
+go get github.com/xxl-job/xxl-job-executor-go
+go get github.com/gin-middleware/xxl-job-executor
+
+999、引入go-micro
+go get github.com/micro/go-micro/v4
+

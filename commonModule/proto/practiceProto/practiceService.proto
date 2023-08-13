@@ -1,0 +1,79 @@
+syntax = "proto3";
+package service;
+option go_package = "./;grpcService";
+
+
+//所有难度类型
+message LevelListRequest{
+}
+
+message LevelListResponse{
+  repeated Level LevelList = 1;
+}
+
+message Level{
+  string ID = 1;
+  string Name = 2;
+  int32 Type = 3;
+}
+
+//所有难度的所有试卷
+message PaperListRequest{
+}
+
+message PaperListResponse {
+  map<int32,  PaperList> PaperMap = 1;
+}
+
+message PaperList {
+  repeated Paper PaperList = 1;
+}
+
+message Paper{
+  string ID = 1;
+  string Name = 2;
+  int32 Type = 3;
+  string TableStruct = 4;
+}
+
+//试卷下的所有题目
+message QuestionListRequest{
+  string PaperID = 1;
+}
+
+message QuestionListResponse{
+  repeated Question QuestionList = 1;
+}
+
+message Question{
+  string ID = 1;
+  string PaperID = 2;
+  string Name = 3;
+  string Description = 4;
+}
+
+//试卷所需的表结构
+message TableStructRequest{
+  string PaperID = 1;
+}
+
+message TableStructResponse{
+  map<string, TableStruct> TableStructMap = 1;
+}
+
+message TableStruct{
+  repeated ColumnComment ColumnCommentList = 1;
+}
+
+message ColumnComment{
+  string Field = 1;
+  string Comment = 2;
+}
+
+//方法
+service PaperService{
+  rpc LevelList(LevelListRequest) returns (LevelListResponse);
+  rpc PaperList(PaperListRequest) returns (PaperListResponse);
+  rpc QuestionList(QuestionListRequest) returns (QuestionListResponse);
+  rpc TableStruct(TableStructRequest) returns (TableStructResponse);
+}

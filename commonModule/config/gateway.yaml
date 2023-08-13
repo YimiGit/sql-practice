@@ -1,0 +1,9 @@
+
+
+etcd:
+  host: host
+  port: 2379
+
+grpc:
+  host: host
+  name: gateway
