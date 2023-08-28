@@ -60,6 +60,12 @@ go get -u google.golang.org/grpc
 go get github.com/xxl-job/xxl-job-executor-go
 go get github.com/gin-middleware/xxl-job-executor
 
+17、金额计算
+ go get github.com/shopspring/decimal
+
+18、分布式锁
+go get github.com/go-redsync/redsync/v4
+
 999、引入go-micro
 go get github.com/micro/go-micro/v4
 

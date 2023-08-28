@@ -1,0 +1,25 @@
+service:
+  port: :19688
+  name: stock-server
+  host: host
+
+mysql:
+  host: host
+  port: port
+  username: username
+  password: password
+  database: database_name
+  maxIdleConns: 10
+  maxOpenConns: 100
+
+redis:
+  host: host
+  port: port
+  password:
+  database: 0
+
+rabbitmq:
+  host: host
+  port: port
+  username: username
+  password: password
