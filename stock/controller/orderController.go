@@ -6,10 +6,7 @@ import (
 	"stock/service"
 )
 
-// StockController 股票模块控制器
-
 // PriceOrder 市价下单/限价下单
-
 func PriceOrder(ctx *gin.Context) {
 	results.ResultHandle(ctx, service.PriceOrder(ctx))
 }
