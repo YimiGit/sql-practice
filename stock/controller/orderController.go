@@ -15,3 +15,8 @@ func PriceOrder(ctx *gin.Context) {
 func CancelOrder(ctx *gin.Context) {
 	results.ResultHandle(ctx, service.CancelOrder(ctx))
 }
+
+// KLineData 获取K线数据
+func KLineData(ctx *gin.Context) {
+	results.ResultHandle(ctx, service.KLineData(ctx))
+}

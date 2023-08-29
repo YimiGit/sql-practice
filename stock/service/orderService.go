@@ -113,3 +113,7 @@ func sortOrder(slice *[]*model.Order, direction int) *[]*model.Order {
 func CancelOrder(c *gin.Context) *results.JsonResult {
 	return results.Success("撤单成功", nil)
 }
+
+func KLineData(c *gin.Context) *results.JsonResult {
+	return results.Success("获取成功", nil)
+}

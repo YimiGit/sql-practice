@@ -10,4 +10,6 @@ func stockInit(engine *gin.Engine) {
 	engine.POST("/stock/priceOrder", controller.PriceOrder)
 
 	engine.POST("/stock/cancelOrder", controller.CancelOrder)
+
+	engine.GET("/stock/kLineData", controller.KLineData)
 }
