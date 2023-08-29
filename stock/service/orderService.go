@@ -42,7 +42,7 @@ func PriceOrder(c *gin.Context) *results.JsonResult {
 		return results.Fail("redis锁定失败", redisLockErr)
 	}
 
-	var orderSlice []*model.Order
+	var orderSlice *[]*model.Order
 
 	//从redis获取当前股票的 下单队列 (买/卖 方向)
 	redisOrderSlice, redisErr := config.RedisClient.Get(CTX, queueKey).Result()
@@ -51,43 +51,20 @@ func PriceOrder(c *gin.Context) *results.JsonResult {
 			return results.Fail("redis获取失败", redisErr)
 		}
 		// redis中没有该股票的下单队列, 创建
-		orderSlice = []*model.Order{}
+		orderSlice = &[]*model.Order{}
 	} else {
 		// redis中有该股票的下单队列, 反序列化
-		redisErr = sonic.Unmarshal([]byte(redisOrderSlice), &orderSlice)
+		redisErr = sonic.Unmarshal([]byte(redisOrderSlice), orderSlice)
 		if redisErr != nil {
 			return results.Fail("redis反序列化失败", redisErr)
 		}
 	}
 
 	// 下单队列 排序
-	// 买入: 价格从高到低、时间从早到晚
-	// 卖出: 价格从低到高、时间从早到晚
-	if requestData.Direction == Buy {
-		// 买入
-		sort.SliceStable(orderSlice, func(i, j int) bool {
-			cmp := orderSlice[i].Price.Cmp(orderSlice[j].Price)
-			if cmp == 1 {
-				return true
-			}
-			if cmp == -1 {
-				return false
-			}
-			return orderSlice[i].CreatedTime.Before(orderSlice[j].CreatedTime)
-		})
-	} else {
-		// 卖出
-		sort.SliceStable(orderSlice, func(i, j int) bool {
-			cmp := orderSlice[i].Price.Cmp(orderSlice[j].Price)
-			if cmp == 1 {
-				return false
-			}
-			if cmp == -1 {
-				return true
-			}
-			return orderSlice[i].CreatedTime.Before(orderSlice[j].CreatedTime)
-		})
-	}
+	orderSlice = sortOrder(orderSlice, requestData.Direction)
+
+	//撮合交易
+	//集合竞价
 
 	redisErr = config.RedisClient.Set(CTX, queueKey, orderSlice, -1).Err()
 	if redisErr != nil {
@@ -100,6 +77,37 @@ func PriceOrder(c *gin.Context) *results.JsonResult {
 	}
 
 	return results.Success("下单成功", requestData)
+}
+
+// 下单队列 排序
+// 买入: 价格从高到低、时间从早到晚
+// 卖出: 价格从低到高、时间从早到晚
+func sortOrder(slice *[]*model.Order, direction int) *[]*model.Order {
+	slices := *slice
+	if direction == Buy {
+		sort.SliceStable(slices, func(i, j int) bool {
+			cmp := slices[i].Price.Cmp(slices[j].Price)
+			if cmp == 1 {
+				return true
+			}
+			if cmp == -1 {
+				return false
+			}
+			return slices[i].CreatedTime.Before(slices[j].CreatedTime)
+		})
+		return &slices
+	}
+	sort.SliceStable(slices, func(i, j int) bool {
+		cmp := slices[i].Price.Cmp(slices[j].Price)
+		if cmp == 1 {
+			return false
+		}
+		if cmp == -1 {
+			return true
+		}
+		return slices[i].CreatedTime.Before(slices[j].CreatedTime)
+	})
+	return &slices
 }
 
 func CancelOrder(c *gin.Context) *results.JsonResult {
